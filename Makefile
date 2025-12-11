@@ -97,34 +97,54 @@ OPENPCI_MD5 = afeef82072c8556559beb6923dccf91f
 $(DOWNLOAD_DIR):
 	mkdir -p $(DOWNLOAD_DIR)
 
+# Portable MD5 verification (works on Linux and macOS)
+# Usage: $(call verify_md5,file,expected_md5)
+# Returns 0 (success) if match, 1 (failure) if mismatch
+define verify_md5_cmd
+actual=$$(md5sum "$(1)" 2>/dev/null | cut -d' ' -f1 || md5 -q "$(1)" 2>/dev/null); \
+[ "$$actual" = "$(2)" ]
+endef
+
 # Download and verify IdentifyUsr.lha
 $(IDENTIFY_USR_LHA): | $(DOWNLOAD_DIR)
-	@if [ -f "$@" ] && echo "$(IDENTIFY_USR_MD5)  $@" | md5sum -c --status 2>/dev/null; then \
+	@if [ -f "$@" ] && $(call verify_md5_cmd,$@,$(IDENTIFY_USR_MD5)); then \
 		echo "$@ already downloaded and verified"; \
 	else \
 		echo "Downloading IdentifyUsr.lha..."; \
 		curl -sL http://aminet.net/util/libs/IdentifyUsr.lha -o $@; \
-		echo "$(IDENTIFY_USR_MD5)  $@" | md5sum -c || (rm -f $@; exit 1); \
+		if $(call verify_md5_cmd,$@,$(IDENTIFY_USR_MD5)); then \
+			echo "$@: OK"; \
+		else \
+			echo "$@: FAILED (MD5 mismatch)"; rm -f $@; exit 1; \
+		fi \
 	fi
 
 # Download and verify IdentifyPci.lha
 $(IDENTIFY_PCI_LHA): | $(DOWNLOAD_DIR)
-	@if [ -f "$@" ] && echo "$(IDENTIFY_PCI_MD5)  $@" | md5sum -c --status 2>/dev/null; then \
+	@if [ -f "$@" ] && $(call verify_md5_cmd,$@,$(IDENTIFY_PCI_MD5)); then \
 		echo "$@ already downloaded and verified"; \
 	else \
 		echo "Downloading IdentifyPci.lha..."; \
 		curl -sL http://aminet.net/util/libs/IdentifyPci.lha -o $@; \
-		echo "$(IDENTIFY_PCI_MD5)  $@" | md5sum -c || (rm -f $@; exit 1); \
+		if $(call verify_md5_cmd,$@,$(IDENTIFY_PCI_MD5)); then \
+			echo "$@: OK"; \
+		else \
+			echo "$@: FAILED (MD5 mismatch)"; rm -f $@; exit 1; \
+		fi \
 	fi
 
 # Download and verify openpci68k.lha
 $(OPENPCI_LHA): | $(DOWNLOAD_DIR)
-	@if [ -f "$@" ] && echo "$(OPENPCI_MD5)  $@" | md5sum -c --status 2>/dev/null; then \
+	@if [ -f "$@" ] && $(call verify_md5_cmd,$@,$(OPENPCI_MD5)); then \
 		echo "$@ already downloaded and verified"; \
 	else \
 		echo "Downloading openpci68k.lha..."; \
 		curl -sL http://aminet.net/driver/other/openpci68k.lha -o $@; \
-		echo "$(OPENPCI_MD5)  $@" | md5sum -c || (rm -f $@; exit 1); \
+		if $(call verify_md5_cmd,$@,$(OPENPCI_MD5)); then \
+			echo "$@: OK"; \
+		else \
+			echo "$@: FAILED (MD5 mismatch)"; rm -f $@; exit 1; \
+		fi \
 	fi
 
 # Download all libraries
