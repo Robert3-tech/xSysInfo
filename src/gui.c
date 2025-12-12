@@ -10,6 +10,7 @@
 #include <devices/inputevent.h>
 #include <intuition/intuition.h>
 
+#include <proto/exec.h>
 #include <proto/graphics.h>
 #include <proto/intuition.h>
 
@@ -1158,8 +1159,9 @@ void handle_button_press(ButtonID btn_id)
             break;
 
         case BTN_SPEED:
+            show_status_overlay(get_string(MSG_MEASURING_SPEED));
             run_benchmarks();
-            redraw_current_view();
+            hide_status_overlay();
             break;
 
         case BTN_PRINT:
@@ -1378,6 +1380,66 @@ void switch_to_view(ViewMode view)
             break;
     }
 
+    redraw_current_view();
+}
+
+/* Blank pointer sprite data for hiding mouse cursor */
+static UWORD blank_pointer[] = {
+    0x0000, 0x0000,  /* Reserved */
+    0x0000, 0x0000,  /* 1 line of empty data */
+    0x0000, 0x0000   /* Reserved */
+};
+
+/*
+ * Show status overlay (red background, centered message, no interaction)
+ */
+void show_status_overlay(const char *message)
+{
+    struct RastPort *rp = app->rp;
+    WORD text_len = strlen(message);
+
+    /* Dialog dimensions and position (centered) */
+    WORD dialog_w = (text_len * 8) + 32;
+    WORD dialog_h = 28;
+    WORD dialog_x = (SCREEN_WIDTH - dialog_w) / 2;
+    WORD dialog_y = (app->screen_height - dialog_h) / 2;
+
+    /* Hide mouse pointer with blank sprite */
+    SetPointer(app->window, blank_pointer, 1, 1, 0, 0);
+
+    /* Disable multitasking */
+    Forbid();
+
+    /* Draw shadow */
+    //SetAPen(rp, COLOR_BUTTON_DARK);
+    //RectFill(rp, dialog_x + 2, dialog_y + 2, dialog_x + dialog_w + 1, dialog_y + dialog_h + 1);
+
+    /* Draw red background */
+    SetAPen(rp, COLOR_BAR_YOU);  /* Red color */
+    RectFill(rp, dialog_x, dialog_y, dialog_x + dialog_w - 1, dialog_y + dialog_h - 1);
+
+    /* Draw 3D border */
+    draw_3d_box(dialog_x, dialog_y, dialog_w, dialog_h, FALSE);
+
+    /* Draw centered message */
+    SetAPen(rp, COLOR_BUTTON_LIGHT);  /* White text */
+    SetBPen(rp, COLOR_BAR_YOU);
+    Move(rp, dialog_x + (dialog_w - text_len * 8) / 2, dialog_y + 16);
+    Text(rp, (CONST_STRPTR)message, text_len);
+}
+
+/*
+ * Hide status overlay and restore view
+ */
+void hide_status_overlay(void)
+{
+    /* Re-enable multitasking */
+    Permit();
+
+    /* Restore mouse pointer */
+    ClearPointer(app->window);
+
+    /* Redraw the main view to restore the area */
     redraw_current_view();
 }
 

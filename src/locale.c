@@ -159,6 +159,8 @@ static const char *default_strings[MSG_COUNT] = {
 
     /* Requester dialogs */
     /* MSG_ENTER_FILENAME */    "Enter Filename or RETURN",
+    /* MSG_MEASURING_SPEED */   "Measuring Speed",
+
     /* Error messages */
     /* MSG_ERR_NO_IDENTIFY */   "Could not open identify.library v13+",
     /* MSG_ERR_NO_MEMORY */     "Out of memory",

@@ -160,6 +160,8 @@ typedef enum {
 
     /* Requester dialogs */
     MSG_ENTER_FILENAME,
+    MSG_MEASURING_SPEED,
+
     /* Error messages */
     MSG_ERR_NO_IDENTIFY,
     MSG_ERR_NO_MEMORY,

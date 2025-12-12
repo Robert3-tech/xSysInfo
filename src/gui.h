@@ -154,4 +154,8 @@ void switch_to_view(ViewMode view);
 /* Overlay requester for filename input */
 BOOL show_filename_requester(const char *title, char *filename, ULONG filename_size);
 
+/* Status overlay (no input, just display) */
+void show_status_overlay(const char *message);
+void hide_status_overlay(void);
+
 #endif /* GUI_H */
