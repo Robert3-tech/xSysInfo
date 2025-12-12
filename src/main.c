@@ -577,16 +577,28 @@ const char *get_location_string(MemoryLocation loc)
 }
 
 /*
- * Utility: Format byte size to human-readable string
+ * Utility: Format byte size to human-readable string with fractions
+ * Uses fixed-point math (x100) via format_scaled
  */
 void format_size(ULONG bytes, char *buffer, ULONG bufsize)
 {
+    char num_buf[32];
+    ULONG scaled;
+
     if (bytes >= 1024 * 1024 * 1024) {
-        snprintf(buffer, bufsize, "%luG", (unsigned long)(bytes / (1024 * 1024 * 1024)));
+        scaled = (bytes / (1024 * 1024 * 1024)) * 100 +
+                 ((bytes % (1024 * 1024 * 1024)) * 100) / (1024 * 1024 * 1024);
+        format_scaled(num_buf, sizeof(num_buf), scaled);
+        snprintf(buffer, bufsize, "%sG", num_buf);
     } else if (bytes >= 1024 * 1024) {
-        snprintf(buffer, bufsize, "%luM", (unsigned long)(bytes / (1024 * 1024)));
+        scaled = (bytes / (1024 * 1024)) * 100 +
+                 ((bytes % (1024 * 1024)) * 100) / (1024 * 1024);
+        format_scaled(num_buf, sizeof(num_buf), scaled);
+        snprintf(buffer, bufsize, "%sM", num_buf);
     } else if (bytes >= 1024) {
-        snprintf(buffer, bufsize, "%luK", (unsigned long)(bytes / 1024));
+        scaled = (bytes / 1024) * 100 + ((bytes % 1024) * 100) / 1024;
+        format_scaled(num_buf, sizeof(num_buf), scaled);
+        snprintf(buffer, bufsize, "%sK", num_buf);
     } else {
         snprintf(buffer, bufsize, "%lu", (unsigned long)bytes);
     }
