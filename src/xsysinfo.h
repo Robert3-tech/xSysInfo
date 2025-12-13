@@ -31,10 +31,9 @@
 
 extern struct TextAttr Topaz8Font;
 
-/* Version information */
-#define XSYSINFO_VERSION    "0.1"
-#define XSYSINFO_DATE       "2025"
+/* Program name */
 #define XSYSINFO_NAME       "xSysInfo"
+/* Version information is coming from Makefile */
 
 /* Minimum library versions */
 #define MIN_IDENTIFY_VERSION    13

@@ -32,6 +32,10 @@
 #include "locale_str.h"
 #include "debug.h"
 
+/* Amiga version string for the Version command */
+__attribute__((used))
+static const char version_string[] = "$VER: " XSYSINFO_NAME " " XSYSINFO_VERSION " (" XSYSINFO_DATE ")";
+
 /* Global library bases */
 extern struct ExecBase *SysBase;
 struct IntuitionBase *IntuitionBase = NULL;

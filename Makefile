@@ -1,5 +1,11 @@
 # xSysInfo Makefile for GCC (m68k-amigaos)
 
+ADATE   := $(shell date '+%-d.%-m.%Y')
+# FULL_VERSION is 42.xx-yy-dirty
+FULL_VERSION ?= $(shell git describe --tags --dirty | sed -r 's/^release_//')
+PROG_VERSION := $(shell echo $(FULL_VERSION) | cut -f1 -d\.)
+PROG_REVISION := $(shell echo $(FULL_VERSION) | cut -f2 -d\.|cut -f1 -d\-)
+
 CC = m68k-amigaos-gcc
 STRIP = m68k-amigaos-strip
 
@@ -10,7 +16,9 @@ IDENTIFY_INC = 3rdparty/identify/reference
 IDENTIFY_INC = 3rdparty/identify/reference
 
 CFLAGS = -O2 -m68000 -mtune=68020-60 -Wa,-m68881 -msoft-float -noixemul -Wall -Wextra \
-         -I$(IDENTIFY_INC)
+         -I$(IDENTIFY_INC) \
+         -DXSYSINFO_DATE="\"$(ADATE)\"" -DXSYSINFO_VERSION="\"$(FULL_VERSION)\"" \
+         -DPROG_VERSION=$(PROG_VERSION) -DPROG_REVISION=$(PROG_REVISION)
 
 LDFLAGS = -noixemul
 LIBS = -lamiga -lgcc
@@ -90,7 +98,7 @@ src/dhry_1.o: src/dhry_1.c src/dhry.h
 src/dhry_2.o: src/dhry_2.c src/dhry.h
 
 # Disk creation
-DISK = xsysinfo.adf
+DISK = xsysinfo-v$(FULL_VERSION).adf
 
 # Downloads directory and files
 DOWNLOAD_DIR = downloads
