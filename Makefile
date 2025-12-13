@@ -53,7 +53,7 @@ else
     FLEXCAT_BIN = 3rdparty/flexcat/src/bin_unix/flexcat
 endif
 
-all: identify $(TARGET)
+all: identify $(TARGET) disk
 
 # FlexCat build - only when binary doesn't exist
 $(FLEXCAT_BIN):
@@ -98,7 +98,7 @@ src/dhry_1.o: src/dhry_1.c src/dhry.h
 src/dhry_2.o: src/dhry_2.c src/dhry.h
 
 # Disk creation
-DISK = xsysinfo-v$(FULL_VERSION).adf
+DISK = xsysinfo-$(FULL_VERSION).adf
 
 # Downloads directory and files
 DOWNLOAD_DIR = downloads
