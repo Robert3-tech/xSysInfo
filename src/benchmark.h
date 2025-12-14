@@ -55,6 +55,7 @@ void run_benchmarks(void);
 ULONG run_dhrystone(void);
 ULONG run_mflops_benchmark(void);
 void run_memory_speed_tests(void);
+ULONG measure_mem_read_speed(volatile ULONG *src, ULONG buffer_size, ULONG iterations);
 
 /* Helper functions */
 ULONG calculate_mips(ULONG dhrystones);
@@ -65,5 +66,6 @@ BOOL init_timer(void);
 void cleanup_timer(void);
 uint64_t get_timer_ticks(void);    /* Returns ticks (1/1000000 sec precision) */
 void wait_ticks(ULONG ticks);
+ULONG measure_loop_overhead(ULONG count);
 
 #endif /* BENCHMARK_H */

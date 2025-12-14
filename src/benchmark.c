@@ -276,30 +276,97 @@ ULONG run_mflops_benchmark(void)
  * Measure memory read speed for a given address range
  * Returns speed in bytes per second
  */
-static ULONG measure_mem_read_speed(volatile ULONG *src, ULONG buffer_size, ULONG iterations)
+/*
+ * Measure loop overhead for compensation
+ */
+ULONG measure_loop_overhead(ULONG count)
 {
-    ULONG start_time, end_time, elapsed;
-    ULONG total_read = 0;
-    ULONG longs_per_read = buffer_size / sizeof(ULONG);
-    volatile ULONG dummy;
-    ULONG i, j;
+    ULONG start, end;
 
+    if (!TimerBase || count == 0) return 0;
+
+    start = get_timer_ticks();
+
+    __asm__ volatile (
+        "1: subq.l #1,%0\n\t"
+        "bne.s 1b"
+        : "+d" (count)
+        :
+        : "cc"
+    );
+
+    end = get_timer_ticks();
+    return end - start;
+}
+
+/*
+ * Measure memory read speed for a given address range
+ * Returns speed in bytes per second
+ */
+ULONG measure_mem_read_speed(volatile ULONG *src, ULONG buffer_size, ULONG iterations)
+{
+    ULONG start_time, end_time, elapsed, overhead;
+    ULONG total_read = 0;
+    ULONG longs_per_read;
+    ULONG loop_count;
+    ULONG i;
+    volatile ULONG *aligned_src;
+
+    /* Ensure buffer is large enough for our unrolled loop */
     if (!TimerBase) return 0;
+
+    /* Align source pointer to 16 bytes for optimal burst mode */
+    aligned_src = (volatile ULONG *)(((ULONG)src + 15) & ~15);
+
+    /* Adjust buffer size if alignment reduced available space */
+    if ((ULONG)aligned_src > (ULONG)src) {
+        ULONG diff = (ULONG)aligned_src - (ULONG)src;
+        if (buffer_size > diff) buffer_size -= diff;
+        else buffer_size = 0;
+    }
+
+    longs_per_read = buffer_size / sizeof(ULONG);
+    loop_count = longs_per_read / 32; /* 8 regs * 4 unrolls = 32 longs (128 bytes) per iter */
+
+    if (loop_count == 0) return 0;
 
     start_time = get_timer_ticks();
 
     for (i = 0; i < iterations; i++) {
-        for (j = 0; j < longs_per_read; j++) {
-            dummy = src[j];
-        }
+        volatile ULONG *p = aligned_src;
+        ULONG count = loop_count;
+
+        /* ASM loop: 4x unrolled movem.l (8 regs) = 128 bytes per loop iteration
+         * Matches 'bustest' implementation for maximum bus saturation.
+         */
+        __asm__ volatile (
+            "1:\n\t"
+            "movem.l (%0)+,%%d1-%%d4/%%a1-%%a4\n\t"
+            "movem.l (%0)+,%%d1-%%d4/%%a1-%%a4\n\t"
+            "movem.l (%0)+,%%d1-%%d4/%%a1-%%a4\n\t"
+            "movem.l (%0)+,%%d1-%%d4/%%a1-%%a4\n\t"
+            "subq.l #1,%1\n\t"
+            "bne.s 1b"
+            : "+a" (p), "+d" (count)
+            :
+            : "d1", "d2", "d3", "d4", "a1", "a2", "a3", "a4", "cc", "memory"
+        );
         total_read += buffer_size;
     }
 
-    /* Suppress unused variable warning */
-    (void)dummy;
-
     end_time = get_timer_ticks();
+
     elapsed = end_time - start_time;
+
+    /* Compensate for loop overhead */
+    /* Total loops executed = iterations * loop_count */
+    overhead = measure_loop_overhead(iterations * loop_count);
+    if (elapsed > overhead) {
+        elapsed -= overhead;
+    } else {
+        /* Should not happen, but safety first */
+        elapsed = 1;
+    }
 
     if (elapsed > 0 && total_read > 0) {
         return (ULONG)(((uint64_t)total_read * 1000000ULL) / elapsed);
@@ -314,8 +381,8 @@ static ULONG measure_mem_read_speed(volatile ULONG *src, ULONG buffer_size, ULON
  */
 void run_memory_speed_tests(void)
 {
-    ULONG buffer_size = 32768;
-    ULONG iterations = 32;
+    ULONG buffer_size = 65536;
+    ULONG iterations = 16;
     APTR chip_buffer;
     APTR fast_buffer;
 

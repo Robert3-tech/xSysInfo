@@ -180,14 +180,7 @@ ULONG measure_memory_speed(ULONG index)
 {
     MemoryRegion *region;
     ULONG buffer_size;
-    ULONG num_reads;
-    ULONG total_read = 0;
-    uint64_t start_time, end_time, elapsed;
-    ULONG bytes_per_sec = 0;
-    volatile ULONG *src;
-    volatile ULONG dummy;
-    ULONG i, j;
-    ULONG longs_per_read;
+    ULONG bytes_per_sec;
 
     if (index >= memory_regions.count) return 0;
 
@@ -201,47 +194,15 @@ ULONG measure_memory_speed(ULONG index)
         buffer_size = region->total_size;
     }
 
-    /* Ensure we're reading aligned longwords */
-    buffer_size &= ~3;
+    /* Ensure reasonable minimum size */
     if (buffer_size < 256) {
-        /* Region too small for meaningful test */
         region->speed_measured = TRUE;
         region->speed_bytes_sec = 0;
         return 0;
     }
 
-    /* Number of read passes to get a meaningful measurement */
-    num_reads = 16;
-
-    /* Calculate longs per read pass */
-    longs_per_read = buffer_size / sizeof(ULONG);
-
-    /* Get start time */
-    start_time = get_timer_ticks();
-
-    /* Perform read test directly on the memory region */
-    src = (volatile ULONG *)region->start_address;
-
-    for (i = 0; i < num_reads; i++) {
-        /* Read through the buffer */
-        for (j = 0; j < longs_per_read; j++) {
-            dummy = src[j];
-        }
-        total_read += buffer_size;
-    }
-
-    /* Suppress unused variable warning */
-    (void)dummy;
-
-    /* Get end time */
-    end_time = get_timer_ticks();
-
-    /* Calculate speed */
-    elapsed = end_time - start_time;
-    if (elapsed > 0 && total_read > 0) {
-        /* Timer ticks are in microseconds */
-        bytes_per_sec = (ULONG)(((uint64_t)total_read * 1000000ULL) / elapsed);
-    }
+    /* Use shared benchmark function (16 iterations) */
+    bytes_per_sec = measure_mem_read_speed((volatile ULONG *)region->start_address, buffer_size, 16);
 
     region->speed_bytes_sec = bytes_per_sec;
     region->speed_measured = TRUE;
