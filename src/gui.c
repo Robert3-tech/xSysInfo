@@ -810,8 +810,19 @@ static void draw_speed_panel(void)
         };
 
         SetAPen(rp, COLOR_TEXT);
-        Move(rp, SPEED_PANEL_X + 4, y);
-        Text(rp, (CONST_STRPTR)ref_names[i], strlen(ref_names[i]));
+        TightText(rp, SPEED_PANEL_X + 4, y, (CONST_STRPTR)ref_names[i], -1, 4);
+
+        /* Draw speed factor (your speed / reference speed) */
+        if (bench_results.benchmarks_valid && reference_systems[i].dhrystones > 0) {
+            ULONG factor_x100 = (bench_results.dhrystones * 100) / reference_systems[i].dhrystones;
+            char factor_str[16];
+	    int factor_off = 0;
+	    if (factor_x100 <= 10000) factor_str[factor_off++] = ' ';
+	    if (factor_x100 <= 1000) factor_str[factor_off++] = ' ';
+            format_scaled(factor_str + factor_off, sizeof(factor_str)-factor_off, factor_x100);
+            SetAPen(rp, COLOR_HIGHLIGHT);
+            TightText(rp, SPEED_PANEL_X + 132, y, (CONST_STRPTR)factor_str, -1, 7);
+        }
 
 	if (bench_results.benchmarks_valid) {
             cur_value = reference_systems[i].dhrystones;
