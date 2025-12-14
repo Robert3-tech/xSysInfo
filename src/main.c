@@ -753,14 +753,14 @@ const char *get_location_string(MemoryLocation loc)
             if (hw_info.kickstart_size >= 1024) {
                 /* Size is in bytes, convert to KB */
                 snprintf(kickstart_size_str, sizeof(kickstart_size_str),
-                         "%luK", (unsigned long)(hw_info.kickstart_size / 1024));
+                         " (%luK) ", (unsigned long)(hw_info.kickstart_size / 1024));
             } else {
                 /* Size is already in KB */
                 snprintf(kickstart_size_str, sizeof(kickstart_size_str),
-                         "%luK", (unsigned long)hw_info.kickstart_size);
+                         " (%luK) ", (unsigned long)hw_info.kickstart_size);
             }
             return kickstart_size_str;
-        default:            return "???";
+        default:            return " (\?\?\?) ";
     }
 }
 
