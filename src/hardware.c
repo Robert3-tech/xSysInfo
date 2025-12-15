@@ -404,25 +404,47 @@ void detect_system_chips(void)
     /* Check for Zorro slots */
     hw_info.has_zorro_slots = FALSE;
     hw_info.has_pcmcia = FALSE;
+    snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
+             "%s", get_string(MSG_NA));
 
-    /* Try to detect based on system type */
-    get_hardware_string(IDHW_SYSTEM, id_buffer, sizeof(id_buffer));
-
-    /* A500/A2000/A3000/A4000 have Zorro slots */
-    /* A600/A1200 have PCMCIA slots */
-    /* This is a simplification - actual detection would need more work */
-    if (strstr(id_buffer, "1200") || strstr(id_buffer, "600")) {
+    /* Prefer real hardware: if card.resource exists, PCMCIA is present */
+    if (OpenResource((CONST_STRPTR)"card.resource") != NULL) {
         hw_info.has_pcmcia = TRUE;
         snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
                  "PCMCIA");
-    } else if (strstr(id_buffer, "2000") || strstr(id_buffer, "3000") ||
-               strstr(id_buffer, "4000") || strstr(id_buffer, "500")) {
-        hw_info.has_zorro_slots = TRUE;
-        snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
-                 "ZORRO");
-    } else {
-        snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
-                 "%s", get_string(MSG_NA));
+        return;
+    }
+
+    /* Try to detect based on system type */
+    {
+        ULONG system_num = IdHardwareNum(IDHW_SYSTEM, NULL);
+
+        /* A500/A2000/A3000/A4000 have Zorro slots */
+        /* A600/A1200 have PCMCIA slots */
+        /* This is a simplification - actual detection would need more work */
+        switch (system_num) {
+            case IDSYS_AMIGA600:
+            case IDSYS_AMIGA1200:
+                hw_info.has_pcmcia = TRUE;
+                snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
+                         "PCMCIA");
+                break;
+            case IDSYS_AMIGA500:
+            case IDSYS_AMIGA2000:
+                hw_info.has_zorro_slots = TRUE;
+                snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
+                         "ZORRO II");
+		break;
+
+            case IDSYS_AMIGA3000:
+            case IDSYS_AMIGA4000:
+                hw_info.has_zorro_slots = TRUE;
+                snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
+                         "ZORROIII");
+                break;
+            default:
+                break;
+        }
     }
 }
 
