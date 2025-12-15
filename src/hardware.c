@@ -411,7 +411,7 @@ void detect_system_chips(void)
     if (OpenResource((CONST_STRPTR)"card.resource") != NULL) {
         hw_info.has_pcmcia = TRUE;
         snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
-                 "PCMCIA");
+                 "%s", get_string(MSG_SLOT_PCMCIA));
         return;
     }
 
@@ -427,20 +427,20 @@ void detect_system_chips(void)
             case IDSYS_AMIGA1200:
                 hw_info.has_pcmcia = TRUE;
                 snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
-                         "PCMCIA");
+                         "%s", get_string(MSG_SLOT_PCMCIA));
                 break;
             case IDSYS_AMIGA500:
             case IDSYS_AMIGA2000:
                 hw_info.has_zorro_slots = TRUE;
                 snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
-                         "ZORRO II");
+                         "%s", get_string(MSG_ZORRO_II));
 		break;
 
             case IDSYS_AMIGA3000:
             case IDSYS_AMIGA4000:
                 hw_info.has_zorro_slots = TRUE;
                 snprintf(hw_info.card_slot_string, sizeof(hw_info.card_slot_string),
-                         "ZORROIII");
+                         "%s", get_string(MSG_ZORRO_III));
                 break;
             default:
                 break;
@@ -460,12 +460,12 @@ void detect_frequencies(void)
         hw_info.horiz_freq = 15625;     /* 15.625 kHz */
         hw_info.vert_freq = 50;
         hw_info.supply_freq = 50;
-        strncpy(hw_info.mode_string, "PAL", sizeof(hw_info.mode_string) - 1);
+        strncpy(hw_info.mode_string, get_string(MSG_MODE_PAL), sizeof(hw_info.mode_string) - 1);
     } else {
         hw_info.horiz_freq = 15734;     /* 15.734 kHz */
         hw_info.vert_freq = 60;
         hw_info.supply_freq = 60;
-        strncpy(hw_info.mode_string, "NTSC", sizeof(hw_info.mode_string) - 1);
+        strncpy(hw_info.mode_string, get_string(MSG_MODE_NTSC), sizeof(hw_info.mode_string) - 1);
     }
 
     /* EClock frequency from exec */

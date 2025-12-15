@@ -52,7 +52,7 @@ const char *get_board_type_string(BoardType type)
         case BOARD_ZORRO_III:
             return get_string(MSG_ZORRO_III);
         default:
-            return "UNKNOWN";
+            return get_string(MSG_UNKNOWN);
     }
 }
 
@@ -208,7 +208,7 @@ void draw_boards_view(void)
         SetAPen(rp, COLOR_TEXT);
         SetBPen(rp, COLOR_BACKGROUND);
         Move(rp, 200, 120);
-        Text(rp, (CONST_STRPTR)"No expansion boards found", 25);
+        Text(rp, (CONST_STRPTR)get_string(MSG_BOARDS_NO_BOARDS_FOUND), strlen(get_string(MSG_BOARDS_NO_BOARDS_FOUND)));
     }
 
     /* Draw exit button */

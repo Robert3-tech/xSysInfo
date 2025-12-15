@@ -102,6 +102,9 @@ typedef enum {
     MSG_HIGHEST_CYLINDER,
     MSG_NUM_BUFFERS,
     MSG_SPEED,
+    MSG_DRIVES_NO_DRIVES_FOUND,
+    MSG_DASH_PLACEHOLDER,
+    MSG_DISK_NO_DISK_INSERTED,
 
     /* Boards view labels */
     MSG_BOARD_ADDRESS,
@@ -110,6 +113,7 @@ typedef enum {
     MSG_PRODUCT,
     MSG_MANUFACTURER,
     MSG_SERIAL_NO,
+    MSG_BOARDS_NO_BOARDS_FOUND,
 
     /* Button labels */
     MSG_BTN_QUIT,
@@ -122,10 +126,14 @@ typedef enum {
     MSG_BTN_NEXT,
     MSG_BTN_EXIT,
     MSG_BTN_SCSI,
+    MSG_BTN_OK,
+    MSG_BTN_CANCEL,
+    MSG_BTN_ALL,
 
     /* Status and values */
     MSG_NA,
     MSG_NONE,
+    MSG_UNKNOWN,
     MSG_YES,
     MSG_NO,
     MSG_IN_USE,
@@ -134,6 +142,11 @@ typedef enum {
     MSG_DISK_OK,
     MSG_DISK_WRITE_PROTECTED,
     MSG_DISK_NO_DISK,
+
+    /* Hardware modes */
+    MSG_MODE_PAL,
+    MSG_MODE_NTSC,
+    MSG_SLOT_PCMCIA,
 
     /* Zorro types */
     MSG_ZORRO_II,
@@ -146,6 +159,36 @@ typedef enum {
     MSG_ROM,
     MSG_24BIT_RAM,
     MSG_32BIT_RAM,
+    MSG_MEM_SPEED_HEADER,
+
+    /* SCSI Types */
+    MSG_SCSI_TYPE_DISK,
+    MSG_SCSI_TYPE_TAPE,
+    MSG_SCSI_TYPE_PRINTER,
+    MSG_SCSI_TYPE_PROCESSOR,
+    MSG_SCSI_TYPE_WORM,
+    MSG_SCSI_TYPE_CDROM,
+    MSG_SCSI_TYPE_SCANNER,
+    MSG_SCSI_TYPE_OPTICAL,
+    MSG_SCSI_TYPE_CHANGER,
+    MSG_SCSI_TYPE_COMM,
+
+    /* SCSI Versions */
+    MSG_SCSI_VER_1,
+    MSG_SCSI_VER_2,
+    MSG_SCSI_VER_3,
+
+    /* SCSI View Headers */
+    MSG_SCSI_ID,
+    MSG_SCSI_TYPE,
+    MSG_SCSI_MANUF,
+    MSG_SCSI_MODEL,
+    MSG_SCSI_REV,
+    MSG_SCSI_MAXBLOCKS,
+    MSG_SCSI_ANSI,
+    MSG_SCSI_REAL,
+    MSG_SCSI_FORMAT,
+    MSG_SCSI_NO_DEVICES,
 
     /* Filesystem types */
     MSG_OFS,

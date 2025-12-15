@@ -75,17 +75,17 @@ ULONG calculate_unit_number(int target, int lun)
 const char *get_scsi_type_string(ScsiDeviceType type)
 {
     switch (type) {
-        case SCSI_TYPE_DISK:      return "DISK";
-        case SCSI_TYPE_TAPE:      return "TAPE";
-        case SCSI_TYPE_PRINTER:   return "PRINTER";
-        case SCSI_TYPE_PROCESSOR: return "PROCESSOR";
-        case SCSI_TYPE_WORM:      return "WORM";
-        case SCSI_TYPE_CDROM:     return "CD";
-        case SCSI_TYPE_SCANNER:   return "SCANNER";
-        case SCSI_TYPE_OPTICAL:   return "OPTICAL";
-        case SCSI_TYPE_CHANGER:   return "CHANGER";
-        case SCSI_TYPE_COMM:      return "COMM";
-        default:                  return "UNKNOWN";
+        case SCSI_TYPE_DISK:      return get_string(MSG_SCSI_TYPE_DISK);
+        case SCSI_TYPE_TAPE:      return get_string(MSG_SCSI_TYPE_TAPE);
+        case SCSI_TYPE_PRINTER:   return get_string(MSG_SCSI_TYPE_PRINTER);
+        case SCSI_TYPE_PROCESSOR: return get_string(MSG_SCSI_TYPE_PROCESSOR);
+        case SCSI_TYPE_WORM:      return get_string(MSG_SCSI_TYPE_WORM);
+        case SCSI_TYPE_CDROM:     return get_string(MSG_SCSI_TYPE_CDROM);
+        case SCSI_TYPE_SCANNER:   return get_string(MSG_SCSI_TYPE_SCANNER);
+        case SCSI_TYPE_OPTICAL:   return get_string(MSG_SCSI_TYPE_OPTICAL);
+        case SCSI_TYPE_CHANGER:   return get_string(MSG_SCSI_TYPE_CHANGER);
+        case SCSI_TYPE_COMM:      return get_string(MSG_SCSI_TYPE_COMM);
+        default:                  return get_string(MSG_UNKNOWN);
     }
 }
 
@@ -95,10 +95,10 @@ const char *get_scsi_type_string(ScsiDeviceType type)
 const char *get_scsi_ansi_string(ScsiAnsiVersion version)
 {
     switch (version) {
-        case SCSI_ANSI_NONE:    return "N/A";
-        case SCSI_ANSI_SCSI1:   return "SCSI-1";
-        case SCSI_ANSI_SCSI2:   return "SCSI-2";
-        case SCSI_ANSI_SCSI3:   return "SCSI-3";
+        case SCSI_ANSI_NONE:    return get_string(MSG_NA);
+        case SCSI_ANSI_SCSI1:   return get_string(MSG_SCSI_VER_1);
+        case SCSI_ANSI_SCSI2:   return get_string(MSG_SCSI_VER_2);
+        case SCSI_ANSI_SCSI3:   return get_string(MSG_SCSI_VER_3);
         default:               return "?";
     }
 }
@@ -509,23 +509,23 @@ void draw_scsi_view(void)
     SetBPen(rp, COLOR_PANEL_BG);
 
     Move(rp, 28, y);
-    Text(rp, (CONST_STRPTR)"ID", 2);
+    Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_ID), strlen(get_string(MSG_SCSI_ID)));
     Move(rp, 56, y);
-    Text(rp, (CONST_STRPTR)"Type", 4);
+    Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_TYPE), strlen(get_string(MSG_SCSI_TYPE)));
     Move(rp, 112, y);
-    Text(rp, (CONST_STRPTR)"Manuf", 5);
+    Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_MANUF), strlen(get_string(MSG_SCSI_MANUF)));
     Move(rp, 200, y);
-    Text(rp, (CONST_STRPTR)"Model", 5);
+    Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_MODEL), strlen(get_string(MSG_SCSI_MODEL)));
     Move(rp, 328, y);
-    Text(rp, (CONST_STRPTR)"Ver", 3);
+    Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_REV), strlen(get_string(MSG_SCSI_REV)));
     Move(rp, 368, y);
-    Text(rp, (CONST_STRPTR)"MaxBlocks", 9);
+    Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_MAXBLOCKS), strlen(get_string(MSG_SCSI_MAXBLOCKS)));
     Move(rp, 448, y);
-    Text(rp, (CONST_STRPTR)"ANSI", 4);
+    Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_ANSI), strlen(get_string(MSG_SCSI_ANSI)));
     Move(rp, 504, y);
-    Text(rp, (CONST_STRPTR)"Real", 4);
+    Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_REAL), strlen(get_string(MSG_SCSI_REAL)));
     Move(rp, 560, y);
-    Text(rp, (CONST_STRPTR)"Format", 6);
+    Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_FORMAT), strlen(get_string(MSG_SCSI_FORMAT)));
 
     /* Draw device list panel */
     draw_panel(20, 46, 600, 130, NULL);
@@ -592,7 +592,7 @@ void draw_scsi_view(void)
     if (scsi_device_list.count == 0) {
         SetAPen(rp, COLOR_TEXT);
         Move(rp, 250, 100);
-        Text(rp, (CONST_STRPTR)"No SCSI devices found", 21);
+        Text(rp, (CONST_STRPTR)get_string(MSG_SCSI_NO_DEVICES), strlen(get_string(MSG_SCSI_NO_DEVICES)));
     }
 
     /* Draw EXIT button */

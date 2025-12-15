@@ -96,7 +96,7 @@ const char *get_disk_state_string(DiskState state)
         case DISK_OK:               return get_string(MSG_DISK_OK);
         case DISK_WRITE_PROTECTED:  return get_string(MSG_DISK_WRITE_PROTECTED);
         case DISK_NO_DISK:          return get_string(MSG_DISK_NO_DISK);
-        default:                    return "Unknown";
+        default:                    return get_string(MSG_UNKNOWN);
     }
 }
 
@@ -681,7 +681,7 @@ void draw_drives_view(void)
     if (app->selected_drive < 0 || app->selected_drive >= (LONG)drive_list.count) {
         SetAPen(rp, COLOR_TEXT);
         Move(rp, 250, 12);
-        Text(rp, (CONST_STRPTR)"No drives found.", 14);
+        Text(rp, (CONST_STRPTR)get_string(MSG_DRIVES_NO_DRIVES_FOUND), strlen(get_string(MSG_DRIVES_NO_DRIVES_FOUND)));
     } else {
         drive = &drive_list.drives[app->selected_drive];
         y = 40;
@@ -698,7 +698,7 @@ void draw_drives_view(void)
 
         /* Disk state */
         if (drive->disk_state == DISK_NO_DISK) {
-            draw_label_value(120, y, get_string(MSG_DISK_STATE), "---", 224);
+            draw_label_value(120, y, get_string(MSG_DISK_STATE), get_string(MSG_DASH_PLACEHOLDER), 224);
         } else {
             draw_label_value(120, y, get_string(MSG_DISK_STATE),
                              get_disk_state_string(drive->disk_state), 224);
@@ -712,7 +712,7 @@ void draw_drives_view(void)
 
         /* Blocks used */
         if (drive->disk_state == DISK_NO_DISK) {
-            strncpy(buffer, "---", sizeof(buffer));
+            snprintf(buffer, sizeof(buffer), "%s", get_string(MSG_DASH_PLACEHOLDER));
         } else {
             snprintf(buffer, sizeof(buffer), "%lu", (unsigned long)drive->blocks_used);
         }
@@ -721,7 +721,7 @@ void draw_drives_view(void)
 
         /* Bytes per block */
         if (drive->disk_state == DISK_NO_DISK) {
-            strncpy(buffer, "---", sizeof(buffer));
+            snprintf(buffer, sizeof(buffer), "%s", get_string(MSG_DASH_PLACEHOLDER));
         } else {
             ULONG display_block_size = get_display_block_size(drive);
             snprintf(buffer, sizeof(buffer), "%lu", (unsigned long)display_block_size);
@@ -731,7 +731,7 @@ void draw_drives_view(void)
 
         /* Filesystem type */
         if (drive->disk_state == DISK_NO_DISK) {
-            draw_label_value(120, y, get_string(MSG_DISK_TYPE), "No Disk Inserted", 224);
+            draw_label_value(120, y, get_string(MSG_DISK_TYPE), get_string(MSG_DISK_NO_DISK_INSERTED), 224);
         } else {
             draw_label_value(120, y, get_string(MSG_DISK_TYPE),
                              get_filesystem_string(drive->fs_type), 224);
@@ -740,12 +740,12 @@ void draw_drives_view(void)
 
         /* Volume name */
         draw_label_value(120, y, get_string(MSG_VOLUME_NAME),
-                         (drive->disk_state == DISK_NO_DISK || !drive->volume_name[0]) ? "---" : drive->volume_name, 224);
+                         (drive->disk_state == DISK_NO_DISK || !drive->volume_name[0]) ? get_string(MSG_DASH_PLACEHOLDER) : drive->volume_name, 224);
         y += 9;
 
         /* Device name */
         draw_label_value(120, y, get_string(MSG_DEVICE_NAME),
-                         drive->handler_name[0] ? drive->handler_name : "---", 224);
+                         drive->handler_name[0] ? drive->handler_name : get_string(MSG_DASH_PLACEHOLDER), 224);
         y += 9;
 
         /* Surfaces */
@@ -795,7 +795,7 @@ void draw_drives_view(void)
                 snprintf(buffer, sizeof(buffer), "%lu B/s", (unsigned long)speed);
             }
         } else {
-            strncpy(buffer, "---", sizeof(buffer));
+            snprintf(buffer, sizeof(buffer), "%s", get_string(MSG_DASH_PLACEHOLDER));
         }
         draw_label_value(120, y, get_string(MSG_SPEED), buffer, 224);
     }

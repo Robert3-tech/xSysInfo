@@ -226,9 +226,9 @@ void update_button_states(void)
             add_button(522, 187, 56, 11,
                        get_string(MSG_DBURST), BTN_DBURST, hw_info.has_dburst);
             add_button(580, 176, 56, 11,
-                       "CBACK", BTN_CBACK, hw_info.has_copyback);
+                       get_string(MSG_CBACK), BTN_CBACK, hw_info.has_copyback);
             add_button(580, 187, 56, 11,
-                       "ALL", BTN_ALL, hw_info.has_icache);
+                       get_string(MSG_BTN_ALL), BTN_ALL, hw_info.has_icache);
             break;
 
         case VIEW_MEMORY:
@@ -884,7 +884,7 @@ static void draw_speed_panel(void)
 
     /* Memory speeds header */
     y += 8;
-    TightText(rp, SPEED_PANEL_X + 4, y, (CONST_STRPTR)"CHIP  FAST  ROM   SPEED", -1, 4);
+    TightText(rp, SPEED_PANEL_X + 4, y, (CONST_STRPTR)get_string(MSG_MEM_SPEED_HEADER), -1, 4);
 
     /* Memory speed values */
     y += 8;
@@ -897,7 +897,7 @@ static void draw_speed_panel(void)
             ULONG frac = (bench_results.chip_speed % 1000000) / 10000;
             snprintf(chip_str, sizeof(chip_str), "%lu.%02lu", (unsigned long)mb, (unsigned long)frac);
         } else {
-            strncpy(chip_str, "N/A", sizeof(chip_str));
+            snprintf(chip_str, sizeof(chip_str), "%s", get_string(MSG_NA));
         }
 
         /* Format FAST speed as X.XX or N/A */
@@ -906,7 +906,7 @@ static void draw_speed_panel(void)
             ULONG frac = (bench_results.fast_speed % 1000000) / 10000;
             snprintf(fast_str, sizeof(fast_str), "%lu.%02lu", (unsigned long)mb, (unsigned long)frac);
         } else {
-            strncpy(fast_str, "N/A", sizeof(fast_str));
+            snprintf(fast_str, sizeof(fast_str), "%s", get_string(MSG_NA));
         }
 
         /* Format ROM speed as X.XX */
@@ -915,7 +915,7 @@ static void draw_speed_panel(void)
             ULONG frac = (bench_results.rom_speed % 1000000) / 10000;
             snprintf(rom_str, sizeof(rom_str), "%lu.%02lu", (unsigned long)mb, (unsigned long)frac);
         } else {
-            strncpy(rom_str, "N/A", sizeof(rom_str));
+            snprintf(rom_str, sizeof(rom_str), "%s", get_string(MSG_NA));
         }
 
         snprintf(buffer, sizeof(buffer), "%-5s %-5s %-5s %s",
@@ -1625,7 +1625,7 @@ static void draw_requester_overlay(WORD x, WORD y, WORD w, WORD h,
     SetAPen(rp, COLOR_TEXT);
     SetBPen(rp, COLOR_PANEL_BG);
     Move(rp, x + 24 + (btn_w - 16) / 2, btn_y + 10);
-    Text(rp, (CONST_STRPTR)"OK", 2);
+    Text(rp, (CONST_STRPTR)get_string(MSG_BTN_OK), strlen(get_string(MSG_BTN_OK)));
 
     /* CANCEL button */
     SetAPen(rp, COLOR_PANEL_BG);
@@ -1634,7 +1634,7 @@ static void draw_requester_overlay(WORD x, WORD y, WORD w, WORD h,
     SetAPen(rp, COLOR_TEXT);
     SetBPen(rp, COLOR_PANEL_BG);
     Move(rp, x + w - 24 - btn_w + (btn_w - 48) / 2, btn_y + 10);
-    Text(rp, (CONST_STRPTR)"CANCEL", 6);
+    Text(rp, (CONST_STRPTR)get_string(MSG_BTN_CANCEL), strlen(get_string(MSG_BTN_CANCEL)));
 }
 
 /*
@@ -1671,8 +1671,8 @@ BOOL show_filename_requester(const char *title, char *filename, ULONG filename_s
     WORD cancel_x = dialog_x + dialog_w - 24 - btn_w;
 
     /* Button structs for OK and CANCEL */
-    Button ok_btn = { ok_x, btn_y, btn_w, btn_h, "OK", BTN_NONE, TRUE, FALSE };
-    Button cancel_btn = { cancel_x, btn_y, btn_w, btn_h, "CANCEL", BTN_NONE, TRUE, FALSE };
+    Button ok_btn = { ok_x, btn_y, btn_w, btn_h, get_string(MSG_BTN_OK), BTN_NONE, TRUE, FALSE };
+    Button cancel_btn = { cancel_x, btn_y, btn_w, btn_h, get_string(MSG_BTN_CANCEL), BTN_NONE, TRUE, FALSE };
 
     /* Initialize cursor position at end of filename */
     filename_len = strlen(filename);

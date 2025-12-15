@@ -101,6 +101,9 @@ static const char *default_strings[MSG_COUNT] = {
     /* MSG_HIGHEST_CYLINDER */  "HIGHEST CYLINDER",
     /* MSG_NUM_BUFFERS */       "NUMBER OF BUFFERS",
     /* MSG_SPEED */             "DRIVE SPEED",
+    /* MSG_DRIVES_NO_DRIVES_FOUND */ "No drives found.",
+    /* MSG_DASH_PLACEHOLDER */  "---",
+    /* MSG_DISK_NO_DISK_INSERTED */ "No Disk Inserted",
 
     /* Boards view labels */
     /* MSG_BOARD_ADDRESS */     "Board Address",
@@ -109,6 +112,7 @@ static const char *default_strings[MSG_COUNT] = {
     /* MSG_PRODUCT */           "Product",
     /* MSG_MANUFACTURER */      "Manufacturer",
     /* MSG_SERIAL_NO */         "Serial No.",
+    /* MSG_BOARDS_NO_BOARDS_FOUND */ "No expansion boards found",
 
     /* Button labels */
     /* MSG_BTN_QUIT */          "QUIT",
@@ -121,10 +125,14 @@ static const char *default_strings[MSG_COUNT] = {
     /* MSG_BTN_NEXT */          "NEXT",
     /* MSG_BTN_EXIT */          "EXIT",
     /* MSG_BTN_SCSI */          "SCSI",
+    /* MSG_BTN_OK */            "OK",
+    /* MSG_BTN_CANCEL */        "CANCEL",
+    /* MSG_BTN_ALL */           "ALL",
 
     /* Status and values */
     /* MSG_NA */                "N/A",
     /* MSG_NONE */              "NONE",
+    /* MSG_UNKNOWN */           "UNKNOWN",
     /* MSG_YES */               "YES",
     /* MSG_NO */                "NO",
     /* MSG_IN_USE */            "IN USE",
@@ -133,6 +141,11 @@ static const char *default_strings[MSG_COUNT] = {
     /* MSG_DISK_OK */           "Disk OK, Read/Write",
     /* MSG_DISK_WRITE_PROTECTED */ "Disk OK, Write Protected",
     /* MSG_DISK_NO_DISK */      "No Disk Present",
+
+    /* Hardware modes */
+    /* MSG_MODE_PAL */          "PAL",
+    /* MSG_MODE_NTSC */         "NTSC",
+    /* MSG_SLOT_PCMCIA */       "PCMCIA",
 
     /* Zorro types */
     /* MSG_ZORRO_II */          "ZORRO II",
@@ -145,6 +158,36 @@ static const char *default_strings[MSG_COUNT] = {
     /* MSG_ROM */               "ROM",
     /* MSG_24BIT_RAM */         "24BIT RAM",
     /* MSG_32BIT_RAM */         "32BIT RAM",
+    /* MSG_MEM_SPEED_HEADER */  "CHIP  FAST  ROM   SPEED",
+
+    /* SCSI Types */
+    /* MSG_SCSI_TYPE_DISK */    "DISK",
+    /* MSG_SCSI_TYPE_TAPE */    "TAPE",
+    /* MSG_SCSI_TYPE_PRINTER */ "PRINTER",
+    /* MSG_SCSI_TYPE_PROCESSOR */ "PROCESSOR",
+    /* MSG_SCSI_TYPE_WORM */    "WORM",
+    /* MSG_SCSI_TYPE_CDROM */   "CD",
+    /* MSG_SCSI_TYPE_SCANNER */ "SCANNER",
+    /* MSG_SCSI_TYPE_OPTICAL */ "OPTICAL",
+    /* MSG_SCSI_TYPE_CHANGER */ "CHANGER",
+    /* MSG_SCSI_TYPE_COMM */    "COMM",
+
+    /* SCSI Versions */
+    /* MSG_SCSI_VER_1 */        "SCSI-1",
+    /* MSG_SCSI_VER_2 */        "SCSI-2",
+    /* MSG_SCSI_VER_3 */        "SCSI-3",
+
+    /* SCSI View Headers */
+    /* MSG_SCSI_ID */           "ID",
+    /* MSG_SCSI_TYPE */         "Type",
+    /* MSG_SCSI_MANUF */        "Manuf",
+    /* MSG_SCSI_MODEL */        "Model",
+    /* MSG_SCSI_REV */          "Rev",
+    /* MSG_SCSI_MAXBLOCKS */    "MaxBlocks",
+    /* MSG_SCSI_ANSI */         "ANSI",
+    /* MSG_SCSI_REAL */         "Real",
+    /* MSG_SCSI_FORMAT */       "Format",
+    /* MSG_SCSI_NO_DEVICES */   "No SCSI devices found",
 
     /* Filesystem types */
     /* MSG_OFS */               "Old File System",
