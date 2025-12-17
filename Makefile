@@ -8,6 +8,10 @@ PROG_REVISION := $(shell echo $(FULL_VERSION) | cut -f2 -d\.|cut -f1 -d\-)
 
 CC = m68k-amigaos-gcc
 STRIP = m68k-amigaos-strip
+VASM    := vasmm68k_mot
+
+# NDK include path (override with: make NDK_INC=/your/path)
+NDK_INC ?= /opt/amiga/m68k-amigaos/ndk-include
 
 # Include paths: our includes + identify.library reference includes
 IDENTIFY_INC = 3rdparty/identify/reference
@@ -83,7 +87,7 @@ src/%.o: src/%.c src/xsysinfo.h
 
 clean:
 	@echo "  CLEAN"
-	@rm -f $(OBJS) $(TARGET)
+	@rm -f $(OBJS) $(TARGET) TinySetPatch
 	@$(MAKE) -s -C 3rdparty/flexcat clean
 	@$(MAKE) -s -C 3rdparty/identify clean
 
@@ -216,8 +220,21 @@ download-libs: $(IDENTIFY_USR_LHA) $(IDENTIFY_PCI_LHA) $(OPENPCI_LHA) $(MMULIB_L
 	@lha xq $(OPENPCI_LHA) Libs/openpci.library
 	@mv Libs/openpci.library 3rdparty/identify/build/
 	@rm -rf Libs
+	# Extract MMULib
+	@echo "  UNPACK $(MMULIB_LHA)"
+	@lha xq $(MMULIB_LHA) MMULib/Libs/mmu.library \
+		MMULib/Libs/680x0.library MMULib/Libs/68020.library \
+		MMULib/Libs/68030.library MMULib/Libs/68040.library \
+		MMULib/Libs/68060.library
+	@mv MMULib/Libs/mmu.library 3rdparty/identify/build/
+	@mv MMULib/Libs/680*.library 3rdparty/identify/build/
+	@rm -rf MMULib
 
-disk: $(TARGET) download-libs
+TinySetPatch: src/TinySetPatch.S
+	@echo "  VASM $@"
+	@$(VASM) -quiet -Fhunkexe -o $@ -nosym $< -I $(NDK_INC)
+
+disk: $(TARGET) download-libs TinySetPatch
 	@echo "  DISK"
 	@xdftool $(DISK) format "xSysInfo"
 	@xdftool $(DISK) write $(TARGET) $(TARGET)
@@ -226,9 +243,14 @@ disk: $(TARGET) download-libs
 	@xdftool $(DISK) makedir Libs
 	@xdftool $(DISK) write 3rdparty/identify/build/identify.library Libs/identify.library
 	@xdftool $(DISK) write 3rdparty/identify/build/openpci.library Libs/openpci.library
+	@for lib in mmu 680x0 68020 68030 68040 68060; do \
+		xdftool $(DISK) write 3rdparty/identify/build/$$lib.library Libs/$$lib.library; \
+	done
 	@xdftool $(DISK) makedir S
 	@xdftool $(DISK) write Startup-Sequence S/Startup-Sequence
 	@xdftool $(DISK) write 3rdparty/identify/build/pci.db S/pci.db
+	@xdftool $(DISK) makedir C
+	@xdftool $(DISK) write TinySetPatch C/TinySetPatch
 	@xdftool $(DISK) boot install
 	@xdftool $(DISK) info
 	@ln -sf $(DISK) xsysinfo.adf
